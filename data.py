@@ -38,6 +38,9 @@ class Duration:
         self.minutes = minutes
         self.seconds = seconds
 
+    # Convert duration to total seconds (for song_shorter_than)
+    def tot_secs(self) -> int:
+        return self.minutes * 60 + self.seconds
 
     # Provide a developer-friendly string representation of the object.
     # input: Duration for which a string representation is desired. 

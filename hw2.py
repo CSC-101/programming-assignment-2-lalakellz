@@ -1,5 +1,6 @@
 import data
-from data import Point, Rectangle, Duration
+from typing import List
+from data import Point, Rectangle, Duration, Song
 
 
 # Write your functions for each part in the space below.
@@ -35,7 +36,18 @@ def shorter_duration_than(dur1: Duration, dur2: Duration) -> bool:
     return seconds1 < seconds2
 
 # Part 3
+# Function to filter songs shorter than a given duration
+# input: list of Song objects, a Duration object as the upper bound
+# output: list of Song objects with durations shorter than the specified upper bound
+def song_shorter_than(songs: List[Song], dur: Duration ) -> List[Song]:
+    result = []
+    max_sec = dur.tot_secs()
+    # go through each song and check if its duration is shorter than dur
+    for song in songs:
+        if song.duration.tot_secs() < max_sec:
+            result.append(song)
 
+    return result
 
 # Part 4
 

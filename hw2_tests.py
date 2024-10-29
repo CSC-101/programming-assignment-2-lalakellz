@@ -3,7 +3,7 @@ import hw2
 import unittest
 
 from data import Duration
-from hw2 import Point, create_rectangle, shorter_duration_than
+from hw2 import Point, create_rectangle, shorter_duration_than, song_shorter_than, Song
 
 
 # Write your test cases for each part below.
@@ -38,7 +38,23 @@ class TestCases(unittest.TestCase):
         self.assertFalse(shorter_duration_than(duration1, duration2))
 
     # Part 3
+    def test_song(self):
+        song1 = Song("Song A", "Artist A", Duration(3, 30))
+        song2 = Song("Song B", "Artist B", Duration(4, 15))
+        song3 = Song("Song C", "Artist C", Duration(5, 0))
+        max_duration = Duration(4, 0)
 
+        result = song_shorter_than([song1, song2, song3], max_duration)
+        self.assertEqual(result, [song1])
+
+    def test_song_2(self):
+        song1 = Song("Song D", "Artist D", Duration(2, 45))
+        song2 = Song("Song E", "Artist E", Duration(3, 30))
+        song3 = Song("Song F", "Artist F", Duration(4, 5))
+        max_duration = Duration(4, 10)
+
+        result = song_shorter_than([song1, song2, song3], max_duration)
+        self.assertEqual(result, [song1, song2, song3])
 
     # Part 4
 
