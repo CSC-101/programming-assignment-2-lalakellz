@@ -3,8 +3,7 @@ import hw2
 import unittest
 
 from data import Duration
-from hw2 import Point, create_rectangle, shorter_duration_than, song_shorter_than, Song
-
+from hw2 import Point, create_rectangle, shorter_duration_than, song_shorter_than, Song, running_time, validate_route, longest_repetition
 
 # Write your test cases for each part below.
 
@@ -57,13 +56,74 @@ class TestCases(unittest.TestCase):
         self.assertEqual(result, [song1, song2, song3])
 
     # Part 4
+    def test_running_time(self):
+        song1 = Song("June Hymn", "Decemberists", Duration(4, 30))
+        song2 = Song("October", "Broken Bells", Duration(3, 40))
+        song3 = Song("Dust in the Wind", "Kansas", Duration(3, 29))
+        song4 = Song("Airplanes", "Local Natives", Duration(3, 58))
 
+        songs = [song1, song2, song3, song4]
+        playlist = [0, 2, 1, 3, 0]
+
+        result = running_time(songs, playlist)
+        self.assertEqual(result.minutes, 20)
+        self.assertEqual(result.seconds, 7)
+
+    def test_running_time_with_out_of_range_indices(self):
+        song1 = Song("June Hymn", "Decemberists", Duration(4, 30))
+        song2 = Song("October", "Broken Bells", Duration(3, 40))
+        song3 = Song("Dust in the Wind", "Kansas", Duration(3, 29))
+
+        songs = [song1, song2, song3]
+        playlist = [0, 1, 4, 2, -1, 5]
+
+        result = running_time(songs, playlist)
+        self.assertEqual(result.minutes, 11)
+        self.assertEqual(result.seconds, 39)
 
     # Part 5
+    def test_route(self):
+        city_links = [
+            ['san luis obispo', 'santa margarita'],
+            ['san luis obispo', 'pismo beach'],
+            ['atascadero', 'santa margarita'],
+            ['atascadero', 'creston']
+        ]
+        route = ['san luis obispo', 'santa margarita', 'atascadero']
+        self.assertTrue(validate_route(city_links, route))
 
+    def test_single_city_route(self):
+        city_links = [
+            ['san luis obispo', 'santa margarita'],
+            ['san luis obispo', 'pismo beach'],
+            ['atascadero', 'santa margarita'],
+            ['atascadero', 'creston']
+        ]
+        route = ['san luis obispo']
+        self.assertTrue(validate_route(city_links, route))
+
+    def test_empty_route(self):
+        city_links = [
+            ['san luis obispo', 'santa margarita'],
+            ['san luis obispo', 'pismo beach'],
+            ['atascadero', 'santa margarita'],
+            ['atascadero', 'creston']
+        ]
+        route = []
+        self.assertTrue(validate_route(city_links, route))
 
     # Part 6
+    def test_longest(self):
+        lst = [1, 1, 2, 2, 1, 1, 1, 3]
+        self.assertEqual(longest_repetition(lst), 4)
 
+    def test_longest_repetition_empty(self):
+        lst = []
+        self.assertIsNone(longest_repetition(lst))
+
+    def test_longest_repetition_no_repeats(self):
+        lst = [1, 2, 3, 4, 5]
+        self.assertEqual(longest_repetition(lst), 0)
 
 
 

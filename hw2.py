@@ -1,7 +1,6 @@
 import data
-from typing import List
+from typing import List, Optional
 from data import Point, Rectangle, Duration, Song
-
 
 # Write your functions for each part in the space below.
 
@@ -50,9 +49,67 @@ def song_shorter_than(songs: List[Song], dur: Duration ) -> List[Song]:
     return result
 
 # Part 4
+# Function to calculate the total running time for a playlist.
+# input: list of Song objects, list of integers indicating the song order in the playlist
+# output: a Duration object with the total playlist running time
+def running_time(songs: List[Song], playlist: List[int]) -> Duration:
+    total_secs = 0
+    # go through each song number in the playlist.
+    for song_index in playlist:
+        # Only consider song_index if it's within the range of the songs list.
+        if 0 <= song_index < len(songs):
+            total_secs += songs[song_index].duration.tot_secs()
 
+    # Calculate total minutes and seconds for the final Duration.
+    mins = total_secs // 60
+    seconds = total_secs % 60
+    return Duration(mins, seconds)
 
 # Part 5
+# Function to validate a travel route between cities
+# input: list of city links
+# input: route list
+# output: bool to show if the route is valid
+def validate_route(city_links: list[list[str]], route: list[str]) -> bool:
+    #an
+    if len(route) <= 1:
+        return True
 
+    for i in range(len(route) -1):
+        city1, city2 = route[i], route[i + 1]
+
+        if [city1, city2] not in city_links and [city2, city1] not in city_links:
+            return False
+
+    return True
 
 # Part 6
+# Function to find the starting index of the longest contiguous repetition
+# input: list of integers
+# output: index of the longest contiguous repetition
+def longest_repetition(lst: List[int]) -> Optional[int]:
+    if not lst:
+        return None
+    max_idx = 0
+    max_len = 1
+    start = 0 # Start index of the current repetition
+    length = 1 # Length of the current repetition
+
+    for i in range(1, len(lst)):
+        if lst[i] == lst[i - 1]:
+            # Continue the repetition
+            length += 1
+        else:
+            # End of the current repetition, compare and reset
+            if length > max_len:
+                max_len = length
+                max_idx = start
+            # Reset current repetition
+            start = i
+            length = 1
+    # Final check after loop in case longest repetition is at the end
+    if length > max_len:
+        max_idx = start
+
+    return max_idx
+
